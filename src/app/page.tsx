@@ -16,9 +16,6 @@ export default function Home() {
           />
           <p className="mt-6 font-display text-2xl sm:text-3xl text-ink">Laughlin, Nevada</p>
           <p className="mt-1 text-muted">The 7th annual, January 2027</p>
-          <p className="mt-6 text-lg sm:text-xl max-w-md mx-auto text-ink leading-snug">
-            Three continents. One river. The biggest field we&apos;ve ever dealt.
-          </p>
           <div className="mt-8 flex flex-col sm:flex-row justify-center gap-3">
             <Link
               href="/leaderboard"
