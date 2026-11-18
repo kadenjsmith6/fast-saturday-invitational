@@ -26,7 +26,7 @@ export default function AdminPage() {
   if (!unlocked) {
     return (
       <Card className="max-w-sm mx-auto">
-        <h1 className="font-display text-2xl font-bold mb-3">Admin</h1>
+        <h1 className="font-display text-2xl gilt mb-3">Admin</h1>
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -49,7 +49,7 @@ export default function AdminPage() {
   return (
     <div className="space-y-4">
       <div className="flex items-end justify-between gap-3">
-        <h1 className="font-display text-3xl font-bold">Admin</h1>
+        <h1 className="font-display text-3xl gilt">Admin</h1>
         <Button
           variant="ghost"
           onClick={() => {
@@ -69,7 +69,7 @@ export default function AdminPage() {
             key={t}
             onClick={() => setTab(t)}
             className={`px-3 py-1.5 rounded-full text-sm whitespace-nowrap ${
-              tab === t ? "bg-pine text-sand font-semibold" : "bg-sand-2"
+              tab === t ? "bg-pine text-ink font-semibold" : "bg-sand-2"
             }`}
           >
             {t}

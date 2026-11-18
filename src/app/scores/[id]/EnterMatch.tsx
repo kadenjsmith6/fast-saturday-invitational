@@ -29,7 +29,16 @@ export default function EnterMatch() {
   const state = computeMatch(match, course, d.playersById, d.rules, match.results ?? {});
   const team = isTeamFormat(match.format);
   const ids = (s: Side) => match.sides[s].playerIds;
-  const short = (s: Side) => ids(s).map((pid) => first(d.playersById[pid]?.name)).join(" & ");
+  // First names on the buttons; add a last initial when two players in the match share one.
+  const everyone = [...ids("A"), ...ids("B")];
+  const nm = (pid: string) => {
+    const full = d.playersById[pid]?.name ?? "?";
+    const f = first(full);
+    const clash = everyone.some((o) => o !== pid && first(d.playersById[o]?.name) === f);
+    const last = full.split(" ").slice(1).join(" ");
+    return clash && last ? `${f} ${last[0]}.` : f;
+  };
+  const short = (s: Side) => ids(s).map(nm).join(" & ");
   const decidedAfter = state.final ? state.holes[state.holes.length - 1]?.number : undefined;
   const holes = SEGMENT_HOLES[match.segment].map((n) => course.holes.find((h) => h.number === n)!);
 
@@ -43,7 +52,7 @@ export default function EnterMatch() {
     return units
       .map((u) => ({ u, s: state.holeStrokes[u]?.[n] ?? 0 }))
       .filter((x) => x.s > 0)
-      .map(({ u, s }) => `${team ? short(u as Side) : first(d.playersById[u]?.name)} ${strokeLabel(s)}`);
+      .map(({ u, s }) => `${team ? short(u as Side) : nm(u)} ${strokeLabel(s)}`);
   };
 
   return (
@@ -63,7 +72,7 @@ export default function EnterMatch() {
             </div>
           ))}
           <div className="order-2 text-center min-w-20">
-            <div className="font-display text-2xl font-bold">{state.label}</div>
+            <div className="font-display text-2xl">{state.label}</div>
             {!state.final && state.thru > 0 && <div className="text-xs text-muted">thru {state.thru}</div>}
           </div>
         </div>
@@ -72,7 +81,7 @@ export default function EnterMatch() {
           {team
             ? (["A", "B"] as Side[]).map((s) => `${short(s)} ${strokeLabel(state.strokes[s])}`).join(" · ")
             : [...ids("A"), ...ids("B")]
-                .map((pid) => `${first(d.playersById[pid]?.name)} ${strokeLabel(state.strokes[pid])}`)
+                .map((pid) => `${nm(pid)} ${strokeLabel(state.strokes[pid])}`)
                 .join(" · ")}
           {state.missing.length > 0 && (
             <div className="text-loss text-xs mt-1">
@@ -92,12 +101,12 @@ export default function EnterMatch() {
           const strokes = strokesOnHole(h.number);
           const btn = (outcome: HoleOutcome, label: string) => {
             const on = o === outcome;
-            const color = outcome === "push" ? "bg-ink text-sand" : "bg-win text-white";
+            const color = outcome === "push" ? "bg-muted text-card" : "bg-pine text-ink ring-2 ring-gold";
             return (
               <button
                 onClick={() => tap(h.number, outcome)}
                 className={`flex-1 rounded-lg py-3 text-sm font-semibold border transition-colors ${
-                  on ? `${color} border-transparent` : "bg-white border-line active:bg-sand-2"
+                  on ? `${color} border-transparent` : "bg-field border-line active:bg-sand-2"
                 }`}
               >
                 {label}
@@ -108,14 +117,14 @@ export default function EnterMatch() {
             <Card key={h.number} className={`p-3 ${over ? "opacity-40" : ""}`}>
               <div className="flex items-baseline justify-between mb-2">
                 <div>
-                  <span className="font-display text-xl font-bold">Hole {h.number}</span>
+                  <span className="font-display text-xl">Hole {h.number}</span>
                   <span className="text-xs text-muted ml-2">
                     Par {h.par} · Hcp {h.hcp}
                   </span>
                 </div>
                 <div className="text-xs text-right">
                   {strokes.length ? (
-                    <span className="text-pine font-semibold">Strokes: {strokes.join(", ")}</span>
+                    <span className="text-gold font-semibold">Strokes: {strokes.join(", ")}</span>
                   ) : (
                     <span className="text-muted">No strokes</span>
                   )}

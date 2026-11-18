@@ -1,47 +1,149 @@
 @import "tailwindcss";
 
+/*
+  Laughlin riverboat casino, circa 1994.
+  Carpet burgundy underfoot, gold trim, felt-green tables,
+  marquee bulbs out front and an amber LED board in the sportsbook.
+*/
 :root {
-  --pine: #123524;
-  --pine-2: #1d4a33;
-  --sand: #f4eee2;
-  --sand-2: #e7dcc6;
-  --gold: #c8973c;
-  --ink: #1c1a17;
-  --muted: #6d665a;
-  --win: #1f7a4a;
-  --loss: #b3412f;
-  --card: #fffdf8;
-  --line: #ddd2bc;
+  --carpet: #3a0a15; /* page */
+  --lacquer: #1a0a0f; /* cards */
+  --booth: #2a0f17; /* inactive chips, panels */
+  --field: #12070b; /* inputs */
+  --felt: #0f5e3d; /* primary buttons, wins */
+  --felt-2: #13744c;
+  --gold: #f2c14e;
+  --brass: #8a6a2a; /* borders */
+  --cream: #fbf1dc; /* text */
+  --muted: #cdb991;
+  --neon: #ff4f9a; /* losses, sparingly */
+  --teal: #29c7c4;
+  --led: #ffb21e;
+  --bulb: #ffe7a3;
 }
 
 @theme inline {
-  --color-pine: var(--pine);
-  --color-pine-2: var(--pine-2);
-  --color-sand: var(--sand);
-  --color-sand-2: var(--sand-2);
-  --color-gold: var(--gold);
-  --color-ink: var(--ink);
+  /* Names kept from the first pass so components don't need renaming. */
+  --color-pine: var(--felt);
+  --color-pine-2: var(--felt-2);
+  --color-sand: var(--carpet);
+  --color-sand-2: var(--booth);
+  --color-card: var(--lacquer);
+  --color-ink: var(--cream);
   --color-muted: var(--muted);
-  --color-win: var(--win);
-  --color-loss: var(--loss);
-  --color-card: var(--card);
-  --color-line: var(--line);
-  --font-display: "Fraunces", Georgia, serif;
-  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --color-gold: var(--gold);
+  --color-line: var(--brass);
+  --color-win: #43d17f;
+  --color-loss: var(--neon);
+  --color-field: var(--field);
+  --color-teal: var(--teal);
+  --color-led: var(--led);
+  --font-display: "Bungee", Impact, sans-serif;
+  --font-sans: "Barlow", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-led: "VT323", ui-monospace, monospace;
 }
 
 body {
-  background: var(--sand);
-  color: var(--ink);
+  color: var(--cream);
   font-family: var(--font-sans);
+  font-size: 17px;
+  background-color: var(--carpet);
+  /* Casino carpet: brass lattice with teal and magenta confetti. */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96' viewBox='0 0 96 96'%3E%3Cg fill='none' stroke='%23f2c14e' stroke-opacity='.09' stroke-width='2'%3E%3Cpath d='M48 4 92 48 48 92 4 48z'/%3E%3Cpath d='M48 26 70 48 48 70 26 48z'/%3E%3C/g%3E%3Ccircle cx='48' cy='48' r='4' fill='%2329c7c4' fill-opacity='.22'/%3E%3Cpath d='M8 10l6 2-4 5z' fill='%23ff4f9a' fill-opacity='.2'/%3E%3Cpath d='M84 80l7 1-3 6z' fill='%2329c7c4' fill-opacity='.18'/%3E%3Crect x='80' y='12' width='5' height='5' transform='rotate(25 82 14)' fill='%23f2c14e' fill-opacity='.16'/%3E%3Ccircle cx='14' cy='82' r='2.5' fill='%23f2c14e' fill-opacity='.2'/%3E%3C/svg%3E");
 }
 
 .font-display {
   font-family: var(--font-display);
+  font-weight: 400;
+  letter-spacing: 0.01em;
+}
+.font-led {
+  font-family: var(--font-led);
 }
 
 input,
 select,
 textarea {
   font-size: 16px; /* stops phones zooming in on tap */
+  color: var(--cream);
+}
+select option {
+  background: var(--lacquer);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Gold leaf headings */
+.gilt {
+  color: var(--gold);
+  text-shadow: 0 1px 0 #6b4a12, 0 0 18px rgb(242 193 78 / 0.25);
+}
+
+/* ── Marquee: a frame of chasing bulbs. The one moving thing on the site. ── */
+.marquee {
+  position: relative;
+  padding: 18px;
+  border-radius: 22px;
+  background: linear-gradient(180deg, #7a1424, #4a0b17);
+  box-shadow: 0 0 0 3px var(--gold), 0 18px 50px rgb(0 0 0 / 0.5);
+}
+.marquee::before,
+.marquee::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  border-radius: 18px;
+  pointer-events: none;
+  background-image: radial-gradient(circle, var(--bulb) 0 3.5px, transparent 4.5px);
+  background-size: 22px 22px;
+  -webkit-mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  padding: 9px;
+  filter: drop-shadow(0 0 4px rgb(255 214 120 / 0.9));
+}
+.marquee::after {
+  background-position: 11px 11px;
+  animation: chase 0.9s steps(1) infinite;
+}
+.marquee::before {
+  animation: chase 0.9s steps(1) infinite reverse;
+}
+@keyframes chase {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.25;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .marquee::before,
+  .marquee::after {
+    animation: none;
+  }
+}
+
+/* ── Sportsbook LED board ── */
+.led-board {
+  background: #060304;
+  border: 3px solid #2b2b2b;
+  border-radius: 10px;
+  box-shadow: inset 0 0 0 2px #000, inset 0 0 40px rgb(255 178 30 / 0.06);
+}
+.led {
+  font-family: var(--font-led);
+  color: var(--led);
+  text-shadow: 0 0 6px rgb(255 178 30 / 0.7);
+}
+.led-dim {
+  color: rgb(255 178 30 / 0.45);
+  text-shadow: none;
+}
+
+/* Felt table surface */
+.felt {
+  background: radial-gradient(ellipse at 50% 30%, #157a50, #0b4a30 75%);
 }

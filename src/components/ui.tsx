@@ -12,7 +12,7 @@ export function Button({
   ...props
 }: ButtonHTMLAttributes<HTMLButtonElement> & { variant?: "primary" | "ghost" | "danger" }) {
   const styles = {
-    primary: "bg-pine text-sand hover:bg-pine-2",
+    primary: "bg-pine text-ink hover:bg-pine-2",
     ghost: "bg-transparent border border-line hover:bg-sand-2",
     danger: "bg-transparent text-loss border border-loss/40 hover:bg-loss/10",
   }[variant];
@@ -37,7 +37,7 @@ export function Input(props: InputHTMLAttributes<HTMLInputElement>) {
   return (
     <input
       {...props}
-      className={`w-full border border-line rounded-lg px-3 py-2 bg-white ${props.className ?? ""}`}
+      className={`w-full border border-line rounded-lg px-3 py-2 bg-field ${props.className ?? ""}`}
     />
   );
 }
@@ -46,7 +46,7 @@ export function Select(props: SelectHTMLAttributes<HTMLSelectElement>) {
   return (
     <select
       {...props}
-      className={`w-full border border-line rounded-lg px-3 py-2 bg-white ${props.className ?? ""}`}
+      className={`w-full border border-line rounded-lg px-3 py-2 bg-field ${props.className ?? ""}`}
     />
   );
 }

@@ -11,7 +11,7 @@ export default function ScoresPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-3xl font-bold">Enter Scores</h1>
+        <h1 className="font-display text-3xl gilt">Enter Scores</h1>
         <p className="text-sm text-muted">Pick your match, then tap who won each hole.</p>
       </div>
       <Status loading={d.loading} error={d.error} />
@@ -22,10 +22,10 @@ export default function ScoresPage() {
         if (!course || list.length === 0) return null;
         return (
           <section key={r.id} className="space-y-2">
-            <h2 className="font-display text-xl font-bold">
+            <h2 className="font-display text-xl">
               {r.name} <span className="text-sm font-sans font-normal text-muted">· {course.name}</span>
             </h2>
-            <div className="grid sm:grid-cols-2 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
               {list.map((m) => (
                 <MatchCard
                   key={m.id}

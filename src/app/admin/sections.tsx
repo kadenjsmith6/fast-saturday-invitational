@@ -60,7 +60,7 @@ export function MatchesSection({ data }: { data: Data }) {
         const course = coursesById[r.courseId];
         return (
           <Card key={r.id}>
-            <h3 className="font-display text-lg font-bold">
+            <h3 className="font-display text-lg">
               {r.name} <span className="text-sm font-sans font-normal text-muted">· {course?.name ?? "No course"}</span>
             </h3>
             {list.length === 0 && <p className="text-sm text-muted mt-1">No matches yet.</p>}
@@ -205,7 +205,7 @@ function NewMatchForm({ data }: { data: Data }) {
 
   return (
     <Card className="space-y-4">
-      <h2 className="font-display text-xl font-bold">New match</h2>
+      <h2 className="font-display text-xl">New match</h2>
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Field label="Round">
           <Select value={round?.id ?? ""} onChange={(e) => setRoundId(e.target.value)}>
@@ -315,7 +315,7 @@ function PlayerEditor({ player, teams, courses }: { player?: Player; teams: Team
 
   return (
     <Card className="space-y-3">
-      {isNew && <h2 className="font-display text-xl font-bold">Add player</h2>}
+      {isNew && <h2 className="font-display text-xl">Add player</h2>}
       <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
         <Field label="Name">
           <Input value={p.name} onChange={(e) => setP({ ...p, name: e.target.value })} />
@@ -402,7 +402,7 @@ export function TeamsSection({ data }: { data: Data }) {
   return (
     <div className="space-y-3">
       <Card className="space-y-3">
-        <h2 className="font-display text-xl font-bold">Teams</h2>
+        <h2 className="font-display text-xl">Teams</h2>
         <p className="text-sm text-muted">Add as many as you need — 2, 3, 4 or 6 all work the same.</p>
         <div className="flex gap-2">
           <Input placeholder="Team name" value={name} onChange={(e) => setName(e.target.value)} />
@@ -460,7 +460,7 @@ export function RoundsSection({ data }: { data: Data }) {
   return (
     <div className="space-y-3">
       <Card className="space-y-3">
-        <h2 className="font-display text-xl font-bold">Add round</h2>
+        <h2 className="font-display text-xl">Add round</h2>
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           <Field label="Name">
             <Input placeholder="Round 1" value={r.name} onChange={(e) => setR({ ...r, name: e.target.value })} />
@@ -556,7 +556,7 @@ function CourseEditor({ course }: { course?: Course }) {
 
   return (
     <Card className="space-y-3">
-      {isNew && <h2 className="font-display text-xl font-bold">Add course</h2>}
+      {isNew && <h2 className="font-display text-xl">Add course</h2>}
       <Field label="Course name">
         <Input value={c.name} onChange={(e) => setC({ ...c, name: e.target.value })} />
       </Field>
@@ -572,7 +572,7 @@ function CourseEditor({ course }: { course?: Course }) {
                       <div className="w-11 text-center font-semibold">{h.number}</div>
                     ) : (
                       <input
-                        className="w-11 border border-line rounded px-1 py-1 text-center bg-white"
+                        className="w-11 border border-line rounded px-1 py-1 text-center bg-field"
                         inputMode="numeric"
                         value={(row === "Par" ? h.par : h.hcp) || ""}
                         onChange={(e) => setHole(i, row === "Par" ? "par" : "hcp", e.target.value)}
@@ -641,7 +641,7 @@ export function SettingsSection({ data }: { data: Data }) {
   return (
     <div className="space-y-3">
       <Card className="space-y-3">
-        <h2 className="font-display text-xl font-bold">Handicap allowances</h2>
+        <h2 className="font-display text-xl">Handicap allowances</h2>
         <p className="text-sm text-muted">Percentages of course handicap. Nine-hole matches automatically get half.</p>
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
           {num("1v1 match play %", r.singlesPct, (v) => setR({ ...r, singlesPct: v }))}
@@ -672,7 +672,7 @@ export function SettingsSection({ data }: { data: Data }) {
       </Card>
 
       <Card className="space-y-2">
-        <h2 className="font-display text-xl font-bold">Test data</h2>
+        <h2 className="font-display text-xl">Test data</h2>
         <p className="text-sm text-muted">
           Loads 3 made-up teams of 4, a test course, a round and a few matches so you can try entering scores. Clear
           it before the trip — it only removes the test records.
