@@ -7,12 +7,12 @@ export default function Home() {
       <section className="marquee max-w-3xl mx-auto">
         <div className="relative rounded-xl bg-card/90 px-5 pt-8 pb-9 sm:px-10 sm:pt-10 text-center">
           <Image
-            src="/logo-gold.png"
+            src="/logo.png"
             alt="Fast Saturday Invitational 2027"
-            width={900}
-            height={872}
+            width={792}
+            height={739}
             priority
-            className="mx-auto w-56 sm:w-72 h-auto drop-shadow-[0_0_24px_rgb(242_193_78/0.35)]"
+            className="mx-auto w-64 sm:w-80 h-auto drop-shadow-[0_0_28px_rgb(255_231_163/0.3)]"
           />
           <p className="mt-6 font-display text-2xl sm:text-3xl text-ink">Laughlin, Nevada</p>
           <p className="mt-1 text-muted">The 7th annual, January 2027</p>
