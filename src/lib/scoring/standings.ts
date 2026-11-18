@@ -1,5 +1,5 @@
 import type { MatchState } from "./match";
-import type { Match, Player, Side } from "./types";
+import type { Match, Side } from "./types";
 
 export interface Standing {
   id: string;
@@ -55,52 +55,4 @@ export function individualStandings(matches: { match: Match; state: MatchState }
     }
   }
   return [...table.values()].sort((a, b) => b.points - a.points || b.projected - a.projected);
-}
-
-export interface StrokePlayRow {
-  playerId: string;
-  gross: number;
-  net: number;
-  thru: number;
-  position: number;
-  points: number;
-}
-
-/**
- * Individual net stroke play with placement points.
- * Ties share the average of the points for the places they cover.
- * Only players who finished all 18 holes earn points.
- */
-export function strokePlayLeaderboard(
-  players: Player[],
-  courseId: string,
-  scores: Record<string, Record<number, number>>,
-  placementPoints: number[],
-): StrokePlayRow[] {
-  const rows = players.map((p) => {
-    const card = scores[p.id] ?? {};
-    const entered = Object.values(card).filter((v) => typeof v === "number");
-    const gross = entered.reduce((s, v) => s + v, 0);
-    const ch = p.courseHandicaps[courseId] ?? 0;
-    const thru = entered.length;
-    // Net prorates the handicap over holes played so the live board is fair mid-round.
-    const net = gross - (ch * thru) / 18;
-    return { playerId: p.id, gross, net, thru, position: 0, points: 0 };
-  });
-  rows.sort((a, b) => (b.thru > 0 ? 1 : 0) - (a.thru > 0 ? 1 : 0) || a.net - b.net);
-
-  let i = 0;
-  while (i < rows.length) {
-    let j = i;
-    while (j + 1 < rows.length && rows[j + 1].net === rows[i].net && rows[j + 1].thru > 0) j++;
-    const finished = rows.slice(i, j + 1).every((r) => r.thru === 18);
-    const pts = placementPoints.slice(i, j + 1);
-    const avg = pts.length ? pts.reduce((s, v) => s + v, 0) / (j - i + 1) : 0;
-    for (let k = i; k <= j; k++) {
-      rows[k].position = i + 1;
-      rows[k].points = finished ? avg : 0;
-    }
-    i = j + 1;
-  }
-  return rows;
 }

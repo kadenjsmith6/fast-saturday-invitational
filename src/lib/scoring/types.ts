@@ -33,11 +33,19 @@ export interface Player {
   photoUrl?: string;
 }
 
-/** Formats where each player plays his own ball and gets his own strokes. */
+/** Each player plays his own ball and gets his own strokes. */
 export type IndividualFormat = "singles" | "bestBall" | "shamble";
-/** Formats where the side plays one ball and gets one set of strokes. */
-export type TeamFormat = "altShot" | "scramble";
+/** The side plays one ball and gets one set of strokes. */
+export type TeamFormat = "scramble" | "pinehurst";
 export type MatchFormat = IndividualFormat | TeamFormat;
+
+export const FORMAT_LABELS: Record<MatchFormat, string> = {
+  singles: "1v1 Match Play",
+  bestBall: "2-Man Best Ball",
+  shamble: "2-Man Shamble",
+  scramble: "2-Man Scramble",
+  pinehurst: "Pinehurst",
+};
 
 export type Segment = "front" | "back" | "full";
 
@@ -57,24 +65,22 @@ export interface Match {
   sides: Record<Side, MatchSide>;
 }
 
-/**
- * Gross scores entered for a match, keyed by hole number.
- * Individual formats key by player id; team formats key by side ("A" / "B").
- */
-export type MatchScores = Record<string, Record<number, number>>;
+/** What happened on each hole. Only the result is recorded, not the scores. */
+export type HoleOutcome = Side | "push";
+export type MatchResults = Record<number, HoleOutcome>;
 
 /** How strokes are figured for each format. All of these are editable settings. */
 export interface HandicapRules {
-  /** Percentage of course handicap used in singles. */
+  /** % of course handicap in 1v1 match play. */
   singlesPct: number;
-  /** Percentage of each player's course handicap in best ball, played off the low man of the foursome. */
+  /** % of each player's course handicap in best ball, off the low man of the foursome. */
   bestBallPct: number;
-  /** Percentage of each player's course handicap in a shamble, played off the low man. */
+  /** % of each player's course handicap in a shamble, off the low man of the foursome. */
   shamblePct: number;
-  /** Percentage of the difference in combined course handicaps in alternate shot. */
-  altShotPct: number;
-  /** Team handicap weights for scrambles, lowest player first (e.g. [0.5, 0.25] for a 2-man). */
-  scrambleWeights: Record<number, number[]>;
+  /** 2-man scramble team handicap: [lower player %, higher player %]. */
+  scrambleWeights: [number, number];
+  /** Pinehurst team handicap: [lower player %, higher player %]. */
+  pinehurstWeights: [number, number];
   /** "half" allows half strokes (league style), "whole" rounds to whole strokes. */
   rounding: "half" | "whole";
 }
@@ -83,10 +89,7 @@ export const DEFAULT_RULES: HandicapRules = {
   singlesPct: 1.0,
   bestBallPct: 0.9,
   shamblePct: 0.75,
-  altShotPct: 0.5, // trip house rule (USGA allowance)
-  scrambleWeights: {
-    2: [0.5, 0.25],
-    4: [0.25, 0.2, 0.15, 0.1],
-  },
+  scrambleWeights: [0.35, 0.15], // USGA
+  pinehurstWeights: [0.6, 0.4],
   rounding: "half",
 };

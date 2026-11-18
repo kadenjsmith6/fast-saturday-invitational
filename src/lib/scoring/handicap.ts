@@ -7,7 +7,7 @@ export const SEGMENT_HOLES: Record<Segment, number[]> = {
 };
 
 export function isTeamFormat(format: Match["format"]): boolean {
-  return format === "altShot" || format === "scramble";
+  return format === "scramble" || format === "pinehurst";
 }
 
 function roundStrokes(value: number, rules: HandicapRules): number {
@@ -58,16 +58,14 @@ export function matchStrokes(
     return { strokes, missing };
   }
 
+  const [lowPct, highPct] = match.format === "scramble" ? rules.scrambleWeights : rules.pinehurstWeights;
   const teamHandicap = (ids: string[]): number => {
-    const hs = ids.map(ch).sort((a, b) => a - b);
-    if (match.format === "altShot") return hs.reduce((s, h) => s + h, 0);
-    const weights = rules.scrambleWeights[hs.length] ?? hs.map(() => 1 / hs.length / 2);
-    return hs.reduce((s, h, i) => s + h * (weights[i] ?? 0), 0);
+    const [low, high = 0] = ids.map(ch).sort((a, b) => a - b);
+    return low * lowPct + high * highPct;
   };
   const a = teamHandicap(match.sides.A.playerIds);
   const b = teamHandicap(match.sides.B.playerIds);
-  const pct = match.format === "altShot" ? rules.altShotPct : 1;
-  const diff = Math.abs(a - b) * pct * seg;
+  const diff = Math.abs(a - b) * seg;
   return {
     strokes: {
       A: a > b ? roundStrokes(diff, rules) : 0,
