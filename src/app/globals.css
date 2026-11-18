@@ -1,26 +1,47 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --pine: #123524;
+  --pine-2: #1d4a33;
+  --sand: #f4eee2;
+  --sand-2: #e7dcc6;
+  --gold: #c8973c;
+  --ink: #1c1a17;
+  --muted: #6d665a;
+  --win: #1f7a4a;
+  --loss: #b3412f;
+  --card: #fffdf8;
+  --line: #ddd2bc;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --color-pine: var(--pine);
+  --color-pine-2: var(--pine-2);
+  --color-sand: var(--sand);
+  --color-sand-2: var(--sand-2);
+  --color-gold: var(--gold);
+  --color-ink: var(--ink);
+  --color-muted: var(--muted);
+  --color-win: var(--win);
+  --color-loss: var(--loss);
+  --color-card: var(--card);
+  --color-line: var(--line);
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--sand);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+input,
+select,
+textarea {
+  font-size: 16px; /* stops phones zooming in on tap */
 }
